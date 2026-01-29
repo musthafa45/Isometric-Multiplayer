@@ -19,10 +19,10 @@ public class NetworkClient : MonoBehaviour, INetEventListener {
     }
 
     private void Start() {
-        Initialize();
+        Init();
     }
 
-    private void Initialize() {
+    private void Init() {
         netDataWriter = new NetDataWriter();
         netManager = new NetManager(this) {
             DisconnectTimeout = 100000
@@ -39,18 +39,8 @@ public class NetworkClient : MonoBehaviour, INetEventListener {
         netManager.PollEvents();
     }
 
-    //public void SendDataToServer(string message) {
-    //    if (serverPeer != null && serverPeer.ConnectionState == ConnectionState.Connected) {
-    //        var bytes = System.Text.Encoding.UTF8.GetBytes(message);
-    //        serverPeer.Send(bytes, DeliveryMethod.ReliableOrdered);
-
-    //    } else {
-    //        Debug.LogWarning("Not connected to server.");
-    //    }
-    //}
-
     public void SendDataToServer<T>(T packet,DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : INetSerializable {
-        if(serverPeer != null && serverPeer.ConnectionState == ConnectionState.Connected) {
+        if(serverPeer != null) {
             netDataWriter.Reset();
             packet.Serialize(netDataWriter);
             serverPeer.Send(netDataWriter, deliveryMethod);
