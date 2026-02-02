@@ -10,7 +10,9 @@ namespace NetworkShared {
         #endregion
 
         #region ServerClient
-        OnAuth = 100
+        OnAuthSuccess = 100,
+        OnAuthFailure = 101,
+        OnServerStatus = 102,
         #endregion
     }
 }

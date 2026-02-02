@@ -1,4 +1,5 @@
-﻿using NetworkShared.Packets.ClientServer;
+﻿using NetworkShared.PacketHandlers;
+using NetworkShared.Packets.ClientServer;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -45,6 +46,10 @@ public class LoginUi : MonoBehaviour {
 
         usernameInput.onValueChanged.AddListener(OnUsernameChanged);
         passwordInput.onValueChanged.AddListener(OnPasswordChanged);
+
+        OnAuthFailure.OnAuthFailureEvent += (msg) => {
+            ShowLoginError();
+        };
 
         NetworkClient.Instance.OnConnected += () => {
             isConnected = true;
@@ -183,10 +188,13 @@ public class LoginUi : MonoBehaviour {
     public void ShowLoginError(string message = "Invalid username or password") {
         userNameOrPasswordErrorText.SetActive(true);
         loginBtn.interactable = true;
+        SetInputsInteractable(true);
+        loginLoadingAnim.SetActive(false);
 
         TMP_Text txt = userNameOrPasswordErrorText.GetComponent<TMP_Text>();
-        if (txt != null)
+        if (txt != null) {
             txt.text = message;
+        } 
     }
 
     public void OnLoginSuccess() {

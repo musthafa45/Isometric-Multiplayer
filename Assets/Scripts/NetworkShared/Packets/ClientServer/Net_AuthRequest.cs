@@ -3,7 +3,7 @@ using LiteNetLib.Utils;
 
 namespace NetworkShared.Packets.ClientServer {
     public struct Net_AuthRequest : INetPacket {
-        public PacketType Type => PacketType.AuthRequest;
+        public readonly PacketType Type => PacketType.AuthRequest;
 
         public string Username { get; set; }
         public string Password { get; set; }
