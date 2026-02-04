@@ -1,8 +1,9 @@
-﻿using NetworkShared.Attributes;
+﻿using NetworkShared;
+using NetworkShared.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace NetworkShared.PacketHandlers
+namespace PacketHandlers
 {
     [HandlerRegister(PacketType.OnAuthSuccess)]
     public class OnAuthHandler : IPacketHandler {

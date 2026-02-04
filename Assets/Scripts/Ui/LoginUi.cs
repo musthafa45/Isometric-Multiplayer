@@ -1,4 +1,4 @@
-﻿using NetworkShared.PacketHandlers;
+﻿using PacketHandlers;
 using NetworkShared.Packets.ClientServer;
 using System;
 using System.Collections;

@@ -1,8 +1,9 @@
-﻿using NetworkShared.Attributes;
+﻿using NetworkShared;
+using NetworkShared.Attributes;
 using NetworkShared.Packets.ServerClient;
 using System;
 
-namespace NetworkShared.PacketHandlers
+namespace PacketHandlers
 {
     [HandlerRegister(PacketType.OnAuthFailure)]
     public class OnAuthFailure : IPacketHandler {

@@ -7,6 +7,7 @@ namespace NetworkShared {
         #region ClientServer
         Invalid = 0,
         AuthRequest = 1,
+        ServerRequestStatus = 2,
         #endregion
 
         #region ServerClient
