@@ -54,6 +54,20 @@ public class NetworkClient : MonoBehaviour, INetEventListener {
         netManager.PollEvents();
     }
 
+    private void OnDestroy() {
+        if (serverPeer != null) {
+            netManager.Stop();
+        }
+    }
+
+    private void OnApplicationQuit() {
+        Disconnect();
+    }
+
+    public void Disconnect() {
+        netManager.DisconnectAll();
+    }
+
     public void SendDataToServer<T>(T packet,DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : INetSerializable {
         if(serverPeer != null) {
             netDataWriter.Reset();

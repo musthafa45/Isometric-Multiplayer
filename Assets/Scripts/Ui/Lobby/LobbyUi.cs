@@ -1,7 +1,6 @@
 using NetworkShared.Packets.ClientServer;
 using NetworkShared.Packets.ServerClient;
 using PacketHandlers;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,22 +20,43 @@ public class LobbyUi : MonoBehaviour
         playerProfileSingleUi.gameObject.SetActive(false);
 
         findOpponentButton.onClick.AddListener(() => {
+            findOpponentButton.interactable = false;
+            logoutButton.interactable = false;
+
             findingOpponentText.gameObject.SetActive(false);
             loadingAnimTransform.gameObject.SetActive(true);
             cancelFindOpponent.gameObject.SetActive(true);
+
+            FindOpponent();
         });
 
         cancelFindOpponent.onClick.AddListener(() => {
+            findOpponentButton.interactable = true;
+            logoutButton.interactable = true;
+
             findingOpponentText.gameObject.SetActive(true);
             loadingAnimTransform.gameObject.SetActive(false);
             cancelFindOpponent.gameObject.SetActive(false);
+
+            CancelFindOpponent();
         });
 
         logoutButton.onClick.AddListener(() => {
-            // For simplicity, just reload the scene
+            NetworkClient.Instance.Disconnect();
             UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
         });
     }
+
+    private void FindOpponent() {
+        Net_FindOpponentRequest msg = new Net_FindOpponentRequest();
+        NetworkClient.Instance.SendDataToServer(msg);
+    }
+
+    private void CancelFindOpponent() {
+        Net_CancelFindOpponentRequest msg = new Net_CancelFindOpponentRequest();
+        NetworkClient.Instance.SendDataToServer(msg);
+    }
+
 
     private void Start() {
         if(NetworkClient.Instance != null) {

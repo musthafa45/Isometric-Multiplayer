@@ -8,12 +8,15 @@ namespace NetworkShared {
         Invalid = 0,
         AuthRequest = 1,
         ServerRequestStatus = 2,
+        FindOpponentRequest = 3,
+        CancelFindOpponentRequest = 4,
         #endregion
 
         #region ServerClient
         OnAuthSuccess = 100,
         OnAuthFailure = 101,
         OnServerStatus = 102,
+        OnFindOpponentRequest = 103,
         #endregion
     }
 }
