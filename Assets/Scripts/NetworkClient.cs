@@ -18,6 +18,8 @@ public class NetworkClient : MonoBehaviour, INetEventListener {
     private HandlerRegistry handlerRegistry;
 
     public event Action OnConnected;
+    public event Action OnConnectionError;
+
     private void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -117,6 +119,13 @@ public class NetworkClient : MonoBehaviour, INetEventListener {
 
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo) {
         //throw new System.NotImplementedException();
+        switch (disconnectInfo.Reason) {
+            case DisconnectReason.Timeout:
+            case DisconnectReason.ConnectionFailed:
+                Debug.LogWarning("Oops! Something went wrong. Please check your internet connection.");
+                OnConnectionError?.Invoke();
+                break;
+        }
     }
 
     private INetPacket ResolvePacket(NetPacketReader reader, PacketType packetType) {

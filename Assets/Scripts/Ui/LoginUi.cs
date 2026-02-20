@@ -48,11 +48,16 @@ public class LoginUi : MonoBehaviour {
         passwordInput.onValueChanged.AddListener(OnPasswordChanged);
 
         OnAuthFailure.OnAuthFailureEvent += (msg) => {
-            ShowLoginError();
+            ShowLoginError("Invalid username or password");
         };
 
         NetworkClient.Instance.OnConnected += () => {
             isConnected = true;
+        };
+
+        NetworkClient.Instance.OnConnectionError += () => {
+            isConnected = false;
+            ShowLoginError("Connection to server lost.");
         };
     }
 
@@ -185,7 +190,7 @@ public class LoginUi : MonoBehaviour {
     // NETWORK CALLBACKS
     // -------------------------
 
-    public void ShowLoginError(string message = "Invalid username or password") {
+    public void ShowLoginError(string message) {
         userNameOrPasswordErrorText.SetActive(true);
         loginBtn.interactable = true;
         SetInputsInteractable(true);

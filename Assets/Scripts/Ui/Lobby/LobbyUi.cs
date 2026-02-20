@@ -1,7 +1,9 @@
 using NetworkShared.Packets.ClientServer;
 using NetworkShared.Packets.ServerClient;
 using PacketHandlers;
+using Packets.ClientServer;
 using TMPro;
+using Ui.Lobby;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,21 +15,27 @@ public class LobbyUi : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalPlayersCountOnlineText;
     [SerializeField] private Transform loadingAnimTransform;
     [SerializeField] private TextMeshProUGUI findingOpponentText;
+    [SerializeField] private Transform selectPlayerUi;
+    [SerializeField] private Button TwoPlayerButton, ThreePlayerButton, FourPlayerButton;
+    [SerializeField] private Image TwoPlayerButtonBg, ThreePlayerButtonBg, FourPlayerButtonBg;
 
+    private int selectedPlayerCount = 2;
     private void Awake() {
         cancelFindOpponent.gameObject.SetActive(false);
         loadingAnimTransform.gameObject.SetActive(false);
         playerProfileSingleUi.gameObject.SetActive(false);
 
+        TwoPlayerButtonBg.gameObject.SetActive(true);
+        ThreePlayerButtonBg.gameObject.SetActive(false);
+        FourPlayerButtonBg.gameObject.SetActive(false);
+        selectPlayerUi.gameObject.SetActive(false);
+
         findOpponentButton.onClick.AddListener(() => {
             findOpponentButton.interactable = false;
             logoutButton.interactable = false;
 
+            selectPlayerUi.gameObject.SetActive(true);
             findingOpponentText.gameObject.SetActive(false);
-            loadingAnimTransform.gameObject.SetActive(true);
-            cancelFindOpponent.gameObject.SetActive(true);
-
-            FindOpponent();
         });
 
         cancelFindOpponent.onClick.AddListener(() => {
@@ -45,10 +53,54 @@ public class LobbyUi : MonoBehaviour
             NetworkClient.Instance.Disconnect();
             UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
         });
+
+        TwoPlayerButton.onClick.AddListener(() => {
+            TwoPlayerButtonBg.gameObject.SetActive(true);
+            ThreePlayerButtonBg.gameObject.SetActive(false);
+            FourPlayerButtonBg.gameObject.SetActive(false);
+            selectedPlayerCount = 2;
+
+            loadingAnimTransform.gameObject.SetActive(true);
+            cancelFindOpponent.gameObject.SetActive(true);
+
+            selectPlayerUi.gameObject.SetActive(false);
+
+            FindOpponent();
+        });
+
+        ThreePlayerButton.onClick.AddListener(() => {
+            TwoPlayerButtonBg.gameObject.SetActive(false);
+            ThreePlayerButtonBg.gameObject.SetActive(true);
+            FourPlayerButtonBg.gameObject.SetActive(false);
+            selectedPlayerCount = 3;
+
+            loadingAnimTransform.gameObject.SetActive(true);
+            cancelFindOpponent.gameObject.SetActive(true);
+
+            selectPlayerUi.gameObject.SetActive(false);
+
+            FindOpponent();
+        });
+
+        FourPlayerButton.onClick.AddListener(() => {
+            TwoPlayerButtonBg.gameObject.SetActive(false);
+            ThreePlayerButtonBg.gameObject.SetActive(false);
+            FourPlayerButtonBg.gameObject.SetActive(true);
+            selectedPlayerCount = 4;
+
+            loadingAnimTransform.gameObject.SetActive(true);
+            cancelFindOpponent.gameObject.SetActive(true);
+
+            selectPlayerUi.gameObject.SetActive(false);
+
+            FindOpponent();
+        });
     }
 
     private void FindOpponent() {
-        Net_FindOpponentRequest msg = new Net_FindOpponentRequest();
+        Net_FindOpponentRequest msg = new Net_FindOpponentRequest() {
+            PlayersCount = (ushort)selectedPlayerCount
+        };
         NetworkClient.Instance.SendDataToServer(msg);
     }
 

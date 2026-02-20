@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
-
-namespace Ui.Lobby {
+namespace Ui.Game {
     public class PlayerProfileSingleUi : MonoBehaviour {
         [SerializeField] private TextMeshProUGUI usernameText;
         [SerializeField] private TextMeshProUGUI rankText;
@@ -26,4 +25,4 @@ namespace Ui.Lobby {
         }
     }
 }
-   
+

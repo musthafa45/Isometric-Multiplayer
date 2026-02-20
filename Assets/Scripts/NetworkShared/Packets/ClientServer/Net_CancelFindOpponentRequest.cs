@@ -1,4 +1,5 @@
 ﻿using LiteNetLib.Utils;
+using NetworkShared;
 
 namespace NetworkShared.Packets.ClientServer {
     public struct Net_CancelFindOpponentRequest : INetPacket {
