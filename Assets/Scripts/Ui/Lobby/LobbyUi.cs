@@ -16,7 +16,7 @@ public class LobbyUi : MonoBehaviour
     [SerializeField] private Transform loadingAnimTransform;
     [SerializeField] private TextMeshProUGUI findingOpponentText;
     [SerializeField] private Transform selectPlayerUi;
-    [SerializeField] private Button TwoPlayerButton, ThreePlayerButton, FourPlayerButton;
+    [SerializeField] private Button TwoPlayerButton, ThreePlayerButton, FourPlayerButton,selectPlayerCancelButton;
     [SerializeField] private Image TwoPlayerButtonBg, ThreePlayerButtonBg, FourPlayerButtonBg;
 
     private int selectedPlayerCount = 2;
@@ -36,6 +36,17 @@ public class LobbyUi : MonoBehaviour
 
             selectPlayerUi.gameObject.SetActive(true);
             findingOpponentText.gameObject.SetActive(false);
+        });
+
+        selectPlayerCancelButton.onClick.AddListener(() => {
+            selectPlayerUi.gameObject.SetActive(false);
+
+            findOpponentButton.interactable = true;
+            logoutButton.interactable = true;
+
+            findingOpponentText.gameObject.SetActive(true);
+            loadingAnimTransform.gameObject.SetActive(false);
+            cancelFindOpponent.gameObject.SetActive(false);
         });
 
         cancelFindOpponent.onClick.AddListener(() => {
@@ -101,12 +112,14 @@ public class LobbyUi : MonoBehaviour
         Net_FindOpponentRequest msg = new Net_FindOpponentRequest() {
             PlayersCount = (ushort)selectedPlayerCount
         };
-        NetworkClient.Instance.SendDataToServer(msg);
+        if (NetworkClient.Instance != null)
+            NetworkClient.Instance.SendDataToServer(msg);
     }
 
     private void CancelFindOpponent() {
         Net_CancelFindOpponentRequest msg = new Net_CancelFindOpponentRequest();
-        NetworkClient.Instance.SendDataToServer(msg);
+        if(NetworkClient.Instance != null)
+            NetworkClient.Instance.SendDataToServer(msg);
     }
 
 

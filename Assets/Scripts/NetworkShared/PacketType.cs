@@ -18,6 +18,7 @@ namespace NetworkShared {
         OnServerStatus = 102,
         OnFindOpponentRequest = 103,
         OnStartGame = 104,
+        OnGameQuestion = 105
         #endregion
     }
 }

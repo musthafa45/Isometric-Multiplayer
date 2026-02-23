@@ -175,7 +175,9 @@ public class LoginUi : MonoBehaviour {
            Password = _password,
        });
 
-        Debug.Log("Connected to server.");
+       GameManager.Instance.MyUsername = _username;
+
+       Debug.Log("Connected to server.");
     }
 
     private void OnExitClicked() {
